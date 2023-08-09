@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayPal JS SDK Demo</title>
+</head>
+
+<body>
+  <div id="paypal-button-container"></div>
+  <script src="https://www.paypal.com/sdk/js?client-id=AQTs6fxk5oobtsQELX0aSoElGRXs7p3snTtXkVqVc5KsxWBtFoBSLnt3DdpH0VnMu7rzDk_7PtwRZmkS&components=buttons&enable-funding=venmo,paylater"></script>
+  <script>
+    paypal.Buttons({
+      style: {
+        layout: 'vertical',
+        shape: 'rect',
+        color: 'gold'
+      },
+
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '10.00' // Modifica el valor según tus necesidades
+            }
+          }]
+        });
+      },
+
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          // Maneja la respuesta del éxito de captura aquí
+          alert('Transacción completada con éxito. ID de transacción: ' + details.id);
+        });
+      },
+
+      onError: function(error) {
+        // Maneja los errores aquí
+        alert('Ha ocurrido un error al procesar la transacción. Por favor, intenta nuevamente.');
+      }
+    }).render('#paypal-button-container');
+  </script>
+</body>
+
+</html>
